@@ -1,6 +1,6 @@
 # Is It Up?
 
-A Ruby gem for adding a simple endpoint to see if your application "is
+A Ruby gem that adds a simple endpoint to see if your application "is
 up".  The endpoint is handled via Rack middleware.  A Railtie is provided
 for simple integration with Ruby on Rails apps.
 
