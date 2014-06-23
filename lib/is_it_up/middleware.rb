@@ -7,7 +7,6 @@ module IsItUp
     end
 
     def call(env)
-      # p env['PATH_INFO']
       status, header, response =
       if env["PATH_INFO"] == "/is_it_up"
         [
