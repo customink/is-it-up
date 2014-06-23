@@ -7,9 +7,14 @@ module IsItUp
     end
 
     def call(env)
+      # p env['PATH_INFO']
       status, header, response =
-      if env['PATH_INFO'] == "/is_it_up"
-        [200, { "Content-Type" => "text/plain" }, ["It is up."]]
+      if env["PATH_INFO"] == "/is_it_up"
+        [
+          200,
+          { "Content-Type" => "application/json" },
+          ['{ "status": "ok", "code": 200 }']
+        ]
       else
         @app.call(env)
       end
