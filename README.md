@@ -20,11 +20,11 @@ Or install it yourself as:
 
 ## Usage
 
-IsItUp provides one monitoring URI that returns a plain text response:
+IsItUp provides one monitoring URI that returns a JSON response:
 
 ```ruby
 % curl your-domain/is_it_up
-It is up.
+{ "status": "ok", "code": 200 }
 ```
 
 ## Contributing
