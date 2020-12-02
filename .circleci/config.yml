@@ -1,0 +1,69 @@
+---
+# ---------------------------------------------------------------------------------------------------------------------
+# CircleCI Snippets
+#
+# Reusable snippets are defined below this section. These are yaml fragments that can injected into the standard
+# CircleCI configuration, reducing the complexity of the entire block.
+# ---------------------------------------------------------------------------------------------------------------------
+docker_image: &docker_image
+  image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/base-ruby:2.7-v4.0
+  aws_auth:
+    aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
+    aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CircleCI Commands Configuration
+#
+# Commands are re-usable steps that can be shared across jobs. For example the installation of gems using bundler or
+# waiting on a database connection. By defining them inside the commands section, they can be invoked as any standard
+# command on the system, but will already be preconfigured. This allows us to keep the jobs definition small and clean
+# ---------------------------------------------------------------------------------------------------------------------
+version: 2.1
+commands:
+  bundle_install:
+    description: "Performs the bundler installation, relying on the CircleCI cache for performance"
+    steps:
+      - restore_cache:
+          keys:
+            - bundler-cache-{{ checksum "is_it_up.gemspec" }}
+      - run:
+          name: "Bundle Install"
+          command: bundle install --path=.bundle
+      - save_cache:
+          key: bundler-cache-{{ checksum "is_it_up.gemspec" }}
+          paths:
+            - .bundle
+  minitest:
+    description: "Runs Minitest with the correct configuration so it runs in parallel and is configured for CircleCI"
+    steps:
+      - run:
+          name: "Minitest Test Suite"
+          command: bundle exec rake
+# ---------------------------------------------------------------------------------------------------------------------
+# CircleCI Job Configuration
+#
+# This section defines all the available jobs that can be executed inside a Workflow.
+# Think of a Job as a batch of tasks that need to be performed to setup the environment and perform a specific task
+# such as running RSpec, uploading the test results to CodeClimate etc.
+# ---------------------------------------------------------------------------------------------------------------------
+jobs:
+  tests:
+    working_directory: ~/is_it_up
+    docker:
+      - <<: *docker_image
+        environment:
+          RAILS_ENV: test
+    steps:
+      - checkout
+      - bundle_install
+      - minitest
+      - store_test_results:
+          path: test/reports
+      - store_artifacts:
+          path: coverage
+workflows:
+  version: 2.1
+  build-and-test:
+    jobs:
+      - tests:
+          context: customink

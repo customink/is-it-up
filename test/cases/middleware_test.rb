@@ -23,13 +23,13 @@ module IsItUp
       end
 
       it "must respond with a JSON content type'" do
-        @response.content_type.must_equal "application/json"
+        assert_equal "application/json", @response.content_type
       end
 
       it "must render a JSON response indicating success'" do
         json = JSON.parse(@response.body)
-        json["status"].must_equal("ok")
-        json["code"].must_equal(200)
+        assert_equal "ok", json["status"]
+        assert_equal 200, json["code"]
       end
     end
 
@@ -39,11 +39,11 @@ module IsItUp
       end
 
       it "must not render the JSON content type" do
-        @response.content_type.must_equal "text/html"
+        assert_equal "text/html", @response.content_type
       end
 
       it "must not render the JSON response for /is_it_up" do
-        @response.body.must_equal "A normal response"
+        assert_equal "A normal response", @response.body
       end
     end
   end
