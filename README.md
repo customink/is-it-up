@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-IsItUp provides one monitoring URI that returns a JSON response:
+IsItUp provides a monitoring URI that returns a JSON response:
 
 ```ruby
 % curl your-domain/is_it_up
@@ -30,10 +30,12 @@ IsItUp provides one monitoring URI that returns a JSON response:
 ## Contributing
 
 1. Fork it ( http://github.com/customink/is_it_up/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+2. Run `bin/bootstrap_macos` (if using macOS) and `bin/setup` to ensure your environment is configured for development
+3. Run `bin/test` to ensure all tests pass
+4. Create your feature branch (`git checkout -b my-new-feature`)
+5. Commit your changes (`git commit -am 'Add some feature'`)
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create new Pull Request
 
 ## Kudos
 
