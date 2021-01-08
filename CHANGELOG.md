@@ -1,5 +1,8 @@
 # IsItUp Changelog
 
+## 0.0.5
+- Fix the autoloading for `Railtie`
+
 ## 0.0.4
 - Added `.ruby-version` file with a recent version of Ruby
 - Added `Brewfile` with the GNU coreutils dependency
