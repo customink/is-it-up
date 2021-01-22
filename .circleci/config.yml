@@ -6,7 +6,7 @@
 # CircleCI configuration, reducing the complexity of the entire block.
 # ---------------------------------------------------------------------------------------------------------------------
 docker_image: &docker_image
-  image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/base-ruby:2.7-v4.0
+  image: ${CUSTOMINK_ECR_URL}/customink/base-ruby:2.7-v4.0
   aws_auth:
     aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
     aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
