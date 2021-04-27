@@ -1,5 +1,10 @@
 # IsItUp Changelog
 
+## 1.0.0
+- Added Appraisal for proper testing against various Rails versions
+- Updated documentation
+- Enforced direct loading of `::Railtie`
+
 ## 0.0.5
 - Fix the autoloading for `Railtie`
 

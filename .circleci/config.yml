@@ -1,17 +1,5 @@
 ---
 # ---------------------------------------------------------------------------------------------------------------------
-# CircleCI Snippets
-#
-# Reusable snippets are defined below this section. These are yaml fragments that can injected into the standard
-# CircleCI configuration, reducing the complexity of the entire block.
-# ---------------------------------------------------------------------------------------------------------------------
-docker_image: &docker_image
-  image: ${CUSTOMINK_ECR_URL}/customink/base-ruby:2.7-v4.0
-  aws_auth:
-    aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
-    aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
-
-# ---------------------------------------------------------------------------------------------------------------------
 # CircleCI Commands Configuration
 #
 # Commands are re-usable steps that can be shared across jobs. For example the installation of gems using bundler or
@@ -20,25 +8,26 @@ docker_image: &docker_image
 # ---------------------------------------------------------------------------------------------------------------------
 version: 2.1
 commands:
-  bundle_install:
-    description: "Performs the bundler installation, relying on the CircleCI cache for performance"
+  appraisal_install:
+    description: "Performs the installation with Appraisal"
+    parameters:
+      ruby-version:
+        type: string
     steps:
       - restore_cache:
           keys:
-            - bundler-cache-{{ checksum "is_it_up.gemspec" }}
+            - appraisal-cache-<< parameters.ruby-version >>-1.0-{{ checksum "is_it_up.gemspec" }}
       - run:
-          name: "Bundle Install"
-          command: bundle install --path=.bundle
+          name: "Appraisal Install"
+          command: |
+            bundle config --local path vendor/bundle
+            bundle install --jobs 4 --retry 3
+            bundle exec appraisal install
       - save_cache:
-          key: bundler-cache-{{ checksum "is_it_up.gemspec" }}
+          key: appraisal-cache-<< parameters.ruby-version >>-1.0-{{ checksum "is_it_up.gemspec" }}
           paths:
-            - .bundle
-  minitest:
-    description: "Runs Minitest with the correct configuration so it runs in parallel and is configured for CircleCI"
-    steps:
-      - run:
-          name: "Minitest Test Suite"
-          command: bundle exec rake
+            - vendor/bundle
+
 # ---------------------------------------------------------------------------------------------------------------------
 # CircleCI Job Configuration
 #
@@ -48,22 +37,67 @@ commands:
 # ---------------------------------------------------------------------------------------------------------------------
 jobs:
   tests:
-    working_directory: ~/is_it_up
+    parameters:
+      ruby-version:
+        type: string
+      gemfile:
+        type: string
     docker:
-      - <<: *docker_image
+      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/base-ruby:<< parameters.ruby-version >>-v5.5
+        user: root
+        aws_auth:
+          aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
+          aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
         environment:
           RAILS_ENV: test
+          RACK_ENV: test
+    working_directory: "/app"
     steps:
       - checkout
-      - bundle_install
-      - minitest
-      - store_test_results:
-          path: test/reports
+      - appraisal_install:
+          ruby-version: << parameters.ruby-version >>
+      - run:
+          name: "Tests"
+          command: bundle exec appraisal << parameters.gemfile >> rake test
       - store_artifacts:
-          path: coverage
+          path: ./coverage
+      - store_test_results:
+          path: ./test/reports
+      - store_artifacts:
+          path: ./test/reports
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CircleCI Workflow Execution Order
+#
+# Here we define the Workflow, the order of the various jobs and their dependencies.
+# This allows us to decide whether to run certain tasks sequentially or run several of them in parallel.
+# ---------------------------------------------------------------------------------------------------------------------
 workflows:
   version: 2.1
   build-and-test:
     jobs:
       - tests:
+          name: "Ruby 2.6 Tests with Rails 5.0"
           context: customink
+          gemfile: "rails5.0"
+          ruby-version: "2.6"
+      - tests:
+          name: "Ruby 2.6 Tests with Rails 5.1"
+          context: customink
+          gemfile: "rails5.1"
+          ruby-version: "2.6"
+      - tests:
+          name: "Ruby 2.6 Tests with Rails 5.2"
+          context: customink
+          gemfile: "rails5.2"
+          ruby-version: "2.6"
+      - tests:
+          name: "Ruby 2.6 Tests with Rails 6.0"
+          context: customink
+          gemfile: "rails6.0"
+          ruby-version: "2.6"
+      - tests:
+          name: "Ruby 2.6 Tests with Rails 6.1"
+          context: customink
+          gemfile: "rails6.1"
+          ruby-version: "2.6"
