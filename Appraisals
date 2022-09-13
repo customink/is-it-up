@@ -9,22 +9,61 @@
 # a build. That feature does not exist in CircleCI, so to ensure that the
 # "bundle exec appraisal install" command works,
 # we exclude certain appraisals when the Ruby version doesn't match.
-appraise 'rails5.0' do
-  gem 'rails', '~> 5.0.0'
+if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("2.3.0")
+    appraise 'rails32' do
+        gem 'rails', '~> 3.2.0'
+        gem 'rack-cache', '~> 1.2.0'
+    end
+
+    appraise 'rails40' do
+        gem 'rails', '~> 4.0.0'
+    end
+
+    appraise 'rails41' do
+        gem 'rails', '~> 4.1.0'
+    end
+
+    appraise 'rails42' do
+        gem 'rails', '~> 4.2.0'
+    end
 end
 
-appraise 'rails5.1' do
-  gem 'rails', '~> 5.1.0'
+if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("2.5.0")
+    appraise 'rails50' do
+        gem 'rails', '~> 5.0.0'
+    end
 end
 
-appraise 'rails5.2' do
-  gem 'rails', '~> 5.2.0'
+if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("2.6.0")
+    appraise 'rails51' do
+        gem 'rails', '~> 5.1.0'
+    end
 end
 
-appraise 'rails6.0' do
-  gem 'rails', '~> 6.0.0'
+if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("2.7.0")
+    appraise 'rails52' do
+        gem 'rails', '~> 5.2.0'
+    end
 end
 
-appraise 'rails6.1' do
-  gem 'rails', '~> 6.1.0'
+if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.5.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.0.0")
+    appraise 'rails60' do
+        gem 'rails', '~> 6.0.0'
+    end
+
+    appraise 'rails61' do
+        gem 'rails', '~> 6.1.0'
+    end
+end
+
+if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.7.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.1.0")
+    appraise 'rails7' do
+      gem 'rails', '7.0.0'
+    end
+end
+
+if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.1.0")
+    appraise 'rails70' do
+      gem 'rails', '~> 7.0.0'
+    end
 end

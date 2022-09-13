@@ -1,15 +1,22 @@
 ---
 # ---------------------------------------------------------------------------------------------------------------------
+# CircleCI Snippets
+#
+# Reusable snippets are defined below this section. These are yaml fragments that can injected into the standard
+# CircleCI configuration, reducing the complexity of the entire block.
+# ---------------------------------------------------------------------------------------------------------------------
+version: 2.1
+
+# ---------------------------------------------------------------------------------------------------------------------
 # CircleCI Commands Configuration
 #
 # Commands are re-usable steps that can be shared across jobs. For example the installation of gems using bundler or
 # waiting on a database connection. By defining them inside the commands section, they can be invoked as any standard
 # command on the system, but will already be preconfigured. This allows us to keep the jobs definition small and clean
 # ---------------------------------------------------------------------------------------------------------------------
-version: 2.1
 commands:
   appraisal_install:
-    description: "Performs the installation with Appraisal"
+    description: "Performs the bundler installation, relying on the CircleCI cache for performance"
     parameters:
       ruby-version:
         type: string
@@ -43,7 +50,7 @@ jobs:
       gemfile:
         type: string
     docker:
-      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/base-ruby:<< parameters.ruby-version >>-v5.5
+      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/ruby:focal-<< parameters.ruby-version >>
         user: root
         aws_auth:
           aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
@@ -51,7 +58,6 @@ jobs:
         environment:
           RAILS_ENV: test
           RACK_ENV: test
-    working_directory: "/app"
     steps:
       - checkout
       - appraisal_install:
@@ -65,6 +71,29 @@ jobs:
           path: ./test/reports
       - store_artifacts:
           path: ./test/reports
+  build_and_publish:
+    docker:
+      - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/ruby:focal-3.0
+        aws_auth:
+          aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
+          aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+        user: root
+    steps:
+      - checkout
+      - run:
+          name: "Configure Rubygems"
+          command: |
+            mkdir ~/.gem
+            touch ~/.gem/credentials
+            echo "---" >> ~/.gem/credentials
+            echo ":github: Bearer $CINK_CIRCLE_CI_GITHUB_PACKAGES_TOKEN" >> ~/.gem/credentials
+            chmod 600 ~/.gem/credentials
+      - run:
+          name: "Gem build"
+          command: gem build is_it_up.gemspec
+      - run:
+          name: "Gem Push"
+          command: gem push --key github --host https://rubygems.pkg.github.com/customink is_it_up-*.gem
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CircleCI Workflow Execution Order
@@ -76,28 +105,208 @@ workflows:
   version: 2.1
   build-and-test:
     jobs:
+      # Ruby 2.2
+      #
+      # This version allows us to use te following Rails versions:
+      #   - 3.2.x
+      #   - 4.0.x
+      #   - 4.1.x
+      #   - 5.0.x
+      #   - 5.1.x
+      #   - 5.2.x
       - tests:
-          name: "Ruby 2.6 Tests with Rails 5.0"
-          context: customink
-          gemfile: "rails5.0"
-          ruby-version: "2.6"
+          name: "Ruby 2.2 Tests with Rails 3.2"
+          context: "customink"
+          gemfile: "rails32"
+          ruby-version: "2.2"
       - tests:
-          name: "Ruby 2.6 Tests with Rails 5.1"
-          context: customink
-          gemfile: "rails5.1"
-          ruby-version: "2.6"
+          name: "Ruby 2.2 Tests with Rails 4.0"
+          context: "customink"
+          gemfile: "rails40"
+          ruby-version: "2.2"
+      - tests:
+          name: "Ruby 2.2 Tests with Rails 4.1"
+          context: "customink"
+          gemfile: "rails41"
+          ruby-version: "2.2"
+      - tests:
+          name: "Ruby 2.2 Tests with Rails 4.2"
+          context: "customink"
+          gemfile: "rails42"
+          ruby-version: "2.2"
+      - tests:
+          name: "Ruby 2.2 Tests with Rails 5.0"
+          context: "customink"
+          gemfile: "rails50"
+          ruby-version: "2.2"
+      - tests:
+          name: "Ruby 2.2 Tests with Rails 5.1"
+          context: "customink"
+          gemfile: "rails51"
+          ruby-version: "2.2"
+      - tests:
+          name: "Ruby 2.2 Tests with Rails 5.2"
+          context: "customink"
+          gemfile: "rails52"
+          ruby-version: "2.2"
+      # Ruby 2.3
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 5.0.x
+      #   - 5.1.x
+      #   - 5.2.x
+      - tests:
+          name: "Ruby 2.3 Tests with Rails 5.0"
+          context: "customink"
+          gemfile: "rails50"
+          ruby-version: "2.3"
+      - tests:
+          name: "Ruby 2.3 Tests with Rails 5.1"
+          context: "customink"
+          gemfile: "rails51"
+          ruby-version: "2.3"
+      - tests:
+          name: "Ruby 2.3 Tests with Rails 5.2"
+          context: "customink"
+          gemfile: "rails52"
+          ruby-version: "2.3"
+      # Ruby 2.4
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 5.0.x
+      #   - 5.1.x
+      #   - 5.2.x
+      - tests:
+          name: "Ruby 2.4 Tests with Rails 5.0"
+          context: "customink"
+          gemfile: "rails50"
+          ruby-version: "2.4"
+      - tests:
+          name: "Ruby 2.4 Tests with Rails 5.1"
+          context: "customink"
+          gemfile: "rails51"
+          ruby-version: "2.4"
+      - tests:
+          name: "Ruby 2.4 Tests with Rails 5.2"
+          context: "customink"
+          gemfile: "rails52"
+          ruby-version: "2.4"
+      # Ruby 2.5
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 5.1.x
+      #   - 5.2.x
+      #   - 6.0.x
+      #   - 6.1.x
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 5.1"
+          context: "customink"
+          gemfile: "rails51"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 5.2"
+          context: "customink"
+          gemfile: "rails52"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 6.0"
+          context: "customink"
+          gemfile: "rails60"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 6.1"
+          context: "customink"
+          gemfile: "rails61"
+          ruby-version: "2.5"
+      # Ruby 2.6
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 5.2.x
+      #   - 6.0.x
+      #   - 6.1.x
       - tests:
           name: "Ruby 2.6 Tests with Rails 5.2"
-          context: customink
-          gemfile: "rails5.2"
+          context: "customink"
+          gemfile: "rails52"
           ruby-version: "2.6"
       - tests:
           name: "Ruby 2.6 Tests with Rails 6.0"
-          context: customink
-          gemfile: "rails6.0"
+          context: "customink"
+          gemfile: "rails60"
           ruby-version: "2.6"
       - tests:
           name: "Ruby 2.6 Tests with Rails 6.1"
-          context: customink
-          gemfile: "rails6.1"
+          context: "customink"
+          gemfile: "rails61"
           ruby-version: "2.6"
+      # Ruby 2.7
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 6.0.x
+      #   - 6.1.x
+      #   - 7.0.0
+      - tests:
+          name: "Ruby 2.7 Tests with Rails 6.0"
+          context: "customink"
+          gemfile: "rails60"
+          ruby-version: "2.7"
+      - tests:
+          name: "Ruby 2.7 Tests with Rails 6.1"
+          context: "customink"
+          gemfile: "rails61"
+          ruby-version: "2.7"
+      - tests:
+          name: "Ruby 2.7 Tests with Rails 7.0.0"
+          context: "customink"
+          gemfile: "rails7"
+          ruby-version: "2.7"
+      # Ruby 3.0
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 7.0.0
+      - tests:
+          name: "Ruby 3.0 Tests with Rails 7.0.0"
+          context: "customink"
+          gemfile: "rails7"
+          ruby-version: "3.0"
+      # Ruby 3.1
+      #
+      # This version allows us to use the following Rails versions:
+      #   - 7.0.x
+      - tests:
+          name: "Ruby 3.1 Tests with Rails 7.0.x"
+          context: "customink"
+          gemfile: "rails70"
+          ruby-version: "3.1"
+      - build_and_publish:
+          context: "customink"
+          requires:
+            - "Ruby 2.2 Tests with Rails 3.2"
+            - "Ruby 2.2 Tests with Rails 4.0"
+            - "Ruby 2.2 Tests with Rails 4.1"
+            - "Ruby 2.2 Tests with Rails 4.2"
+            - "Ruby 2.2 Tests with Rails 5.0"
+            - "Ruby 2.2 Tests with Rails 5.1"
+            - "Ruby 2.2 Tests with Rails 5.2"
+            - "Ruby 2.3 Tests with Rails 5.0"
+            - "Ruby 2.3 Tests with Rails 5.1"
+            - "Ruby 2.3 Tests with Rails 5.2"
+            - "Ruby 2.4 Tests with Rails 5.0"
+            - "Ruby 2.4 Tests with Rails 5.1"
+            - "Ruby 2.4 Tests with Rails 5.2"
+            - "Ruby 2.5 Tests with Rails 5.1"
+            - "Ruby 2.5 Tests with Rails 5.2"
+            - "Ruby 2.5 Tests with Rails 6.0"
+            - "Ruby 2.5 Tests with Rails 6.1"
+            - "Ruby 2.6 Tests with Rails 5.2"
+            - "Ruby 2.6 Tests with Rails 6.0"
+            - "Ruby 2.6 Tests with Rails 6.1"
+            - "Ruby 2.7 Tests with Rails 6.0"
+            - "Ruby 2.7 Tests with Rails 6.1"
+            - "Ruby 2.7 Tests with Rails 7.0.0"
+            - "Ruby 3.0 Tests with Rails 7.0.0"
+            - "Ruby 3.1 Tests with Rails 7.0.x"
+          filters:
+            branches:
+              only:
+                - master
