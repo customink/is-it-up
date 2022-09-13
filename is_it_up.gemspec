@@ -14,9 +14,10 @@ Gem::Specification.new do |spec|
   spec.files         = ::Dir.glob(::Pathname.new(__dir__).join("lib/**/**")).reject do |file|
     file.match(%r{^(test|spec|features)/}) || ::File.directory?(file)
   end
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
+  spec.bindir = ["bin"]
 
   spec.add_dependency "rack"
 

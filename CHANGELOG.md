@@ -1,5 +1,8 @@
 # IsItUp Changelog
 
+## 1.1.1
+- Fixed the gemspec
+
 ## 1.1.0
 - Added support for testing against all known Ruby and Rails versions
 
