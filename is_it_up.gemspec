@@ -1,4 +1,5 @@
 require_relative 'lib/is_it_up/version'
+require 'pathname'
 
 Gem::Specification.new do |spec|
   spec.name          = "is_it_up"
