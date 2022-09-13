@@ -1,0 +1,15 @@
+---
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "03:00"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - ruby
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "[Dependabot]"

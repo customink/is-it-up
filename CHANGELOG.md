@@ -1,5 +1,8 @@
 # IsItUp Changelog
 
+## 1.1.0
+- Added support for testing against all known Ruby and Rails versions
+
 ## 1.0.0
 - Added Appraisal for proper testing against various Rails versions
 - Updated documentation

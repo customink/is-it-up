@@ -4,6 +4,11 @@ A Ruby gem that adds a simple endpoint to see if your application "is
 up".  The endpoint is handled via Rack middleware.  A Railtie is provided
 for integration with Ruby on Rails apps.
 
+## Requirements
+
+* Ruby 2.2 or higher
+* Ruby on Rails 3.2 or higher
+
 ## Installation
 
 Add this line to your application's Gemfile:
