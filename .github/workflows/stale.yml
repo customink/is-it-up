@@ -22,3 +22,4 @@ jobs:
           exempt-pr-labels: "keep-open,dependabot,dependencies"
 
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+
