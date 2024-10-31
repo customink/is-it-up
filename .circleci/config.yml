@@ -53,8 +53,7 @@ jobs:
       - image: 916869144969.dkr.ecr.us-east-1.amazonaws.com/customink/ruby:focal-<< parameters.ruby-version >>
         user: root
         aws_auth:
-          aws_access_key_id: ${PRODUCTION_AWS_ACCESS_KEY_ID}
-          aws_secret_access_key: ${PRODUCTION_AWS_SECRET_ACCESS_KEY}
+          oidc_role_arn: arn:aws:iam::916869144969:role/customink-continuous-integration
         environment:
           RAILS_ENV: test
           RACK_ENV: test
