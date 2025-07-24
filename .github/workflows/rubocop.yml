@@ -1,0 +1,23 @@
+name: Rubocop
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  rubocop:
+    name: runner / rubocop
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_ONLY: rubocop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: reviewdog/action-rubocop@v2
+        with:
+          reporter: github-pr-check
+          use_bundler: true
+          skip_install: true # setup-ruby action installs gems in group specified by BUNDLE_ONLY variable
+          # rubocop_flags: --fail-level=warning --display-only-fail-level-offenses

@@ -8,3 +8,7 @@ group :test do
   gem 'minitest-ci', require: false
   gem 'simplecov', require: false
 end
+
+group :rubocop, :development do
+  gem 'rubocop'
+end
