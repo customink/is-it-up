@@ -1,5 +1,7 @@
 # Is It Up?
 
+[![Overall](https://img.shields.io/endpoint?style=flat&url=https://app.opslevel.com/api/service_level/aWm4Uy64RdAwRm7Gc_Fqdv1nE8wUcGcNh3smz-duw3w)](https://app.opslevel.com/services/is-it-up/maturity-report)
+
 A Ruby gem that adds a simple endpoint to see if your application "is
 up".  The endpoint is handled via Rack middleware.  A Railtie is provided
 for integration with Ruby on Rails apps.
@@ -48,4 +50,3 @@ Various ideas borrowed from:
 
 * [is_it_up](https://github.com/andhapp/is_it_up), a similar rack middleware.
 * [fitter_happer](https://github.com/atmos/fitter_happier), a similar Rails plugin.
-
