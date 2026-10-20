@@ -8,8 +8,8 @@ for integration with Ruby on Rails apps.
 
 ## Requirements
 
-* Ruby 2.7 or higher
-* Ruby on Rails 6.0 or higher
+* Ruby 2.5 or higher
+* Ruby on Rails 5.1 or higher
 
 ## Installation
 
