@@ -1,5 +1,12 @@
 # IsItUp Changelog
 
+## 2.0.0
+- Removed support for Ruby 2.2, 2.3, 2.4 and 2.6, and for Rails 3.2, 4.0, 4.1, 4.2 and 5.0
+- Added Ruby 3.2, 3.3, 3.4 and 4.0 to the test matrix, along with Rails 7.1, 7.2, 8.0 and 8.1
+- Moved the CI images from Ubuntu focal to noble
+- Pinned `concurrent-ruby` below 1.3.5 for the Rails 6.x and 7.0.0 appraisals
+- Updated `.ruby-version` to 3.1
+
 ## 1.1.1
 - Fixed the gemspec
 

@@ -9,69 +9,61 @@
 # a build. That feature does not exist in CircleCI, so to ensure that the
 # "bundle exec appraisal install" command works,
 # we exclude certain appraisals when the Ruby version doesn't match.
-if ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("2.6.0")
-    appraise 'rails51' do
-        gem 'rails', '~> 5.1.0'
-    end
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.6.0')
+  appraise 'rails51' do
+    gem 'rails', '~> 5.1.0'
+  end
 
-    appraise 'rails52' do
-        gem 'rails', '~> 5.2.0'
-    end
-
+  appraise 'rails52' do
+    gem 'rails', '~> 5.2.0'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.5.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.0.0")
-    appraise 'rails60' do
-        gem 'rails', '~> 6.0.0'
-        gem 'concurrent-ruby', '< 1.3.5'
-    end
+if Gem::Version.new(RUBY_VERSION) > Gem::Version.new('2.5.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.0.0')
+  appraise 'rails60' do
+    gem 'rails', '~> 6.0.0'
+    gem 'concurrent-ruby', '< 1.3.5'
+  end
 
-    appraise 'rails61' do
-        gem 'rails', '~> 6.1.0'
-        gem 'concurrent-ruby', '< 1.3.5'
-    end
-
+  appraise 'rails61' do
+    gem 'rails', '~> 6.1.0'
+    gem 'concurrent-ruby', '< 1.3.5'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.7.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.1.0")
-    appraise 'rails7' do
-        gem 'rails', '7.0.0'
-        gem 'concurrent-ruby', '< 1.3.5'
-    end
-
+if Gem::Version.new(RUBY_VERSION) > Gem::Version.new('2.7.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.1.0')
+  appraise 'rails7' do
+    gem 'rails', '7.0.0'
+    gem 'concurrent-ruby', '< 1.3.5'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.1.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.3.0")
-    appraise 'rails70' do
-        gem 'rails', '~> 7.0.0'
-    end
-
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.1.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.3.0')
+  appraise 'rails70' do
+    gem 'rails', '~> 7.0.0'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.2.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.4.0")
-    appraise 'rails71' do
-        gem 'rails', '~> 7.1.0'
-    end
-
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.2.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.4.0')
+  appraise 'rails71' do
+    gem 'rails', '~> 7.1.0'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.3.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.5.0")
-    appraise 'rails72' do
-        gem 'rails', '~> 7.2.0'
-    end
-
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.3.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.5.0')
+  appraise 'rails72' do
+    gem 'rails', '~> 7.2.0'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.2.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.5.0")
-    appraise 'rails80' do
-        gem 'rails', '~> 8.0.0'
-    end
-
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.2.0') && Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.5.0')
+  appraise 'rails80' do
+    gem 'rails', '~> 8.0.0'
+  end
 end
 
-if ::Gem::Version.new(RUBY_VERSION) >= ::Gem::Version.new("3.4.0")
-    appraise 'rails81' do
-        gem 'rails', '~> 8.1.0'
-    end
-
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('3.4.0')
+  appraise 'rails81' do
+    gem 'rails', '~> 8.1.0'
+  end
 end
