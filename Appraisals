@@ -12,16 +12,19 @@
 if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.5.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.0.0")
     appraise 'rails60' do
         gem 'rails', '~> 6.0.0'
+        gem 'concurrent-ruby', '< 1.3.5'
     end
 
     appraise 'rails61' do
         gem 'rails', '~> 6.1.0'
+        gem 'concurrent-ruby', '< 1.3.5'
     end
 end
 
 if ::Gem::Version.new(RUBY_VERSION) > ::Gem::Version.new("2.7.0") && ::Gem::Version.new(RUBY_VERSION) < ::Gem::Version.new("3.1.0")
     appraise 'rails7' do
       gem 'rails', '7.0.0'
+      gem 'concurrent-ruby', '< 1.3.5'
     end
 end
 
