@@ -105,12 +105,28 @@ workflows:
   version: 2.1
   build-and-test:
     jobs:
+      # Ruby 2.5
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 5.1"
+          context: "customink"
+          gemfile: "rails51"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 5.2"
+          context: "customink"
+          gemfile: "rails52"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 6.0"
+          context: "customink"
+          gemfile: "rails60"
+          ruby-version: "2.5"
+      - tests:
+          name: "Ruby 2.5 Tests with Rails 6.1"
+          context: "customink"
+          gemfile: "rails61"
+          ruby-version: "2.5"
       # Ruby 2.7
-      #
-      # This version allows us to use the following Rails versions:
-      #   - 6.0.x
-      #   - 6.1.x
-      #   - 7.0.0
       - tests:
           name: "Ruby 2.7 Tests with Rails 6.0"
           context: "customink"
@@ -127,32 +143,90 @@ workflows:
           gemfile: "rails7"
           ruby-version: "2.7"
       # Ruby 3.0
-      #
-      # This version allows us to use the following Rails versions:
-      #   - 7.0.0
       - tests:
           name: "Ruby 3.0 Tests with Rails 7.0.0"
           context: "customink"
           gemfile: "rails7"
           ruby-version: "3.0"
       # Ruby 3.1
-      #
-      # This version allows us to use the following Rails versions:
-      #   - 7.0.x
       - tests:
           name: "Ruby 3.1 Tests with Rails 7.0.x"
           context: "customink"
           gemfile: "rails70"
           ruby-version: "3.1"
+      # Ruby 3.2
+      - tests:
+          name: "Ruby 3.2 Tests with Rails 7.0.x"
+          context: "customink"
+          gemfile: "rails70"
+          ruby-version: "3.2"
+      - tests:
+          name: "Ruby 3.2 Tests with Rails 7.1.x"
+          context: "customink"
+          gemfile: "rails71"
+          ruby-version: "3.2"
+      - tests:
+          name: "Ruby 3.2 Tests with Rails 8.0.x"
+          context: "customink"
+          gemfile: "rails80"
+          ruby-version: "3.2"
+      # Ruby 3.3
+      - tests:
+          name: "Ruby 3.3 Tests with Rails 7.1.x"
+          context: "customink"
+          gemfile: "rails71"
+          ruby-version: "3.3"
+      - tests:
+          name: "Ruby 3.3 Tests with Rails 7.2.x"
+          context: "customink"
+          gemfile: "rails72"
+          ruby-version: "3.3"
+      - tests:
+          name: "Ruby 3.3 Tests with Rails 8.0.x"
+          context: "customink"
+          gemfile: "rails80"
+          ruby-version: "3.3"
+      # Ruby 3.4
+      - tests:
+          name: "Ruby 3.4 Tests with Rails 7.2.x"
+          context: "customink"
+          gemfile: "rails72"
+          ruby-version: "3.4"
+      - tests:
+          name: "Ruby 3.4 Tests with Rails 8.0.x"
+          context: "customink"
+          gemfile: "rails80"
+          ruby-version: "3.4"
+      - tests:
+          name: "Ruby 3.4 Tests with Rails 8.1.x"
+          context: "customink"
+          gemfile: "rails81"
+          ruby-version: "3.4"
+      # Ruby 4.0
+      - tests:
+          name: "Ruby 4.0 Tests with Rails 8.1.x"
+          context: "customink"
+          gemfile: "rails81"
+          ruby-version: "4.0"
       - build_and_publish:
           context: "customink"
           requires:
+            - "Ruby 2.5 Tests with Rails 5.1"
+            - "Ruby 2.5 Tests with Rails 5.2"
+            - "Ruby 2.5 Tests with Rails 6.0"
+            - "Ruby 2.5 Tests with Rails 6.1"
             - "Ruby 2.7 Tests with Rails 6.0"
             - "Ruby 2.7 Tests with Rails 6.1"
             - "Ruby 2.7 Tests with Rails 7.0.0"
             - "Ruby 3.0 Tests with Rails 7.0.0"
             - "Ruby 3.1 Tests with Rails 7.0.x"
-          filters:
-            branches:
-              only:
-                - master
+            - "Ruby 3.2 Tests with Rails 7.0.x"
+            - "Ruby 3.2 Tests with Rails 7.1.x"
+            - "Ruby 3.2 Tests with Rails 8.0.x"
+            - "Ruby 3.3 Tests with Rails 7.1.x"
+            - "Ruby 3.3 Tests with Rails 7.2.x"
+            - "Ruby 3.3 Tests with Rails 8.0.x"
+            - "Ruby 3.4 Tests with Rails 7.2.x"
+            - "Ruby 3.4 Tests with Rails 8.0.x"
+            - "Ruby 3.4 Tests with Rails 8.1.x"
+            - "Ruby 4.0 Tests with Rails 8.1.x"
