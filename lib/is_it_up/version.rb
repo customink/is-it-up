@@ -1,5 +1,5 @@
 module IsItUp
-  VERSION = '1.1.1'.freeze
+  VERSION = '2.0.0'.freeze
 
   public_constant :VERSION
 end
