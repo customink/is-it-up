@@ -8,6 +8,7 @@ module IsItUp
 
     it 'properly loads Railtie constants' do
       begin
+        require 'active_support'
         require 'rails/railtie'
         refute_nil VERSION
       rescue NameError
