@@ -210,6 +210,9 @@ workflows:
           ruby-version: "4.0"
       - build_and_publish:
           context: "customink"
+          filters:
+            branches:
+              only: master
           requires:
             - "Ruby 2.5 Tests with Rails 5.1"
             - "Ruby 2.5 Tests with Rails 5.2"
