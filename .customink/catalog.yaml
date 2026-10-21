@@ -1,6 +1,6 @@
 name: is-it-up
 
-owner: atlas # team definitions at https://app.opslevel.com/teams
+owner: webops # team definitions at https://app.opslevel.com/teams
 
 purpose: # multiple choice
   # - app
