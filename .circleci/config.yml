@@ -93,7 +93,14 @@ jobs:
           command: gem build is_it_up.gemspec
       - run:
           name: "Gem Push"
-          command: gem push --key github --host https://rubygems.pkg.github.com/customink is_it_up-*.gem
+          command: |
+            if ! output=$(gem push --key github --host https://rubygems.pkg.github.com/customink is_it_up-*.gem 2>&1); then
+              echo "$output"
+              echo "$output" | grep -q "has already been pushed" || exit 1
+              echo "Version already published, skipping"
+            else
+              echo "$output"
+            fi
 
 # ---------------------------------------------------------------------------------------------------------------------
 # CircleCI Workflow Execution Order
