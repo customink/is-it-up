@@ -1,5 +1,8 @@
 # IsItUp Changelog
 
+## 2.0.1
+- Fixed `bindir` in the gemspec, which was an array and made the gem fail to install on RubyGems 4 with `invalid bindir`
+
 ## 2.0.0
 - Removed support for Ruby 2.2, 2.3, 2.4 and 2.6, and for Rails 3.2, 4.0, 4.1, 4.2 and 5.0
 - Added Ruby 3.2, 3.3, 3.4 and 4.0 to the test matrix, along with Rails 7.1, 7.2, 8.0 and 8.1
