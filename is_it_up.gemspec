@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
-  spec.bindir = ["bin"]
+  spec.bindir = "bin"
 
   spec.add_dependency "rack"
 
